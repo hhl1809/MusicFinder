@@ -1,9 +1,14 @@
 package com.hocluan.musicfinder
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import com.acrcloud.rec.sdk.ACRCloudClient
 import com.acrcloud.rec.sdk.ACRCloudConfig
@@ -26,6 +31,9 @@ class MainActivity : AppCompatActivity(), IACRCloudListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Hide the Navigation Bar
+        supportActionBar?.hide()
 
         this.setupACRCEnvironment()
         start_button.setOnClickListener {
