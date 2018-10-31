@@ -1,22 +1,14 @@
 package com.hocluan.musicfinder
 
-import android.annotation.SuppressLint
-import android.os.Build
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
-import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.Toast
 import com.acrcloud.rec.sdk.ACRCloudClient
 import com.acrcloud.rec.sdk.ACRCloudConfig
 import com.acrcloud.rec.sdk.IACRCloudListener
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 import java.io.File
 
 class MainActivity : AppCompatActivity(), IACRCloudListener {
@@ -27,6 +19,10 @@ class MainActivity : AppCompatActivity(), IACRCloudListener {
     var mProcessing: Boolean = false
     var initState: Boolean = false
     var path: String = ""
+
+    companion object {
+        val MUSIC_DETAIL_KEY = "MUSIC_DETAIL"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,38 +83,10 @@ class MainActivity : AppCompatActivity(), IACRCloudListener {
             this.mProcessing = true
             if (this.mClient == null || !(this.mClient?.startRecognize() ?: true)) {
                 mProcessing = false
-                time_textView.text = "start error!"
+                Toast.makeText(this,"Something wrong", Toast.LENGTH_SHORT).show()
             }
             this.startTime = System.currentTimeMillis()
         }
-    }
-
-    private  fun fetchJson(result: String) {
-        try {
-            val json = JSONObject(result)
-            val status = json.getJSONObject("status")
-            val code = status.getInt("code")
-            if (code == 0) {
-                val metadata = json.getJSONObject("metadata")
-                if (metadata.has("music")) {
-                    val musics: JSONArray = metadata.getJSONArray("music")
-//                    musics.forEach { music: JSONObject ->
-//                        val title = music.getString("title")
-//                        musicName_textView.text = title
-//                    }
-                    if (musics.length() > 0) {
-                        val title = musics.getJSONObject(0).getString("title")
-                        musicName_textView.text = title
-                    }
-                }
-            } else {
-                musicName_textView.text = result
-            }
-        } catch (e: JSONException) {
-            musicName_textView.text = result
-            e.printStackTrace()
-        }
-
     }
 
     // MARK: - IACRCloudListener
@@ -128,18 +96,16 @@ class MainActivity : AppCompatActivity(), IACRCloudListener {
             this.mProcessing = false
         }
 
-        this.fetchJson(p0 ?: "")
+        val intent = Intent(this, MusicDetailActivity::class.java)
+        intent.putExtra(MUSIC_DETAIL_KEY, p0 ?: "")
+        startActivity(intent)
     }
 
     override fun onVolumeChanged(p0: Double) {
-        val time = (System.currentTimeMillis() - this.startTime) / 1000
-        time_textView.text = p0.toString() + "\n\n Record Time: " + time.toString() + " s"
+//        val time = (System.currentTimeMillis() - this.startTime) / 1000
+//        time_textView.text = p0.toString() + "\n\n Record Time: " + time.toString() + " s"
     }
 
-
-}
-
-private fun JSONArray.forEach(any: Any) {
 
 }
 
