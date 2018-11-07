@@ -1,9 +1,14 @@
 package com.hocluan.musicfinder
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.acrcloud.rec.sdk.ACRCloudClient
 import com.acrcloud.rec.sdk.ACRCloudConfig
@@ -33,7 +38,11 @@ class MainActivity : AppCompatActivity(), IACRCloudListener {
 
         this.setupACRCEnvironment()
         start_button.setOnClickListener {
-            this.start()
+//            this.start()
+            val animation = AnimationUtils.loadAnimation(this, R.anim.bounce)
+            val interpolator = BounceInterpolator(0.2, 20.0)
+            animation.setInterpolator(interpolator)
+            start_button.startAnimation(animation)
         }
 
     }
@@ -108,4 +117,5 @@ class MainActivity : AppCompatActivity(), IACRCloudListener {
 
 
 }
+
 
