@@ -7,6 +7,7 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.WindowManager
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), IACRCloudListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        requestAppPermission()
         // Transparent Status Bar
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
             setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true)
@@ -95,6 +96,10 @@ class MainActivity : AppCompatActivity(), IACRCloudListener {
     }
     
     // MARK: - Functions
+    private fun requestAppPermission() {
+        val permissions = arrayOf(android.Manifest.permission.RECORD_AUDIO)
+        ActivityCompat.requestPermissions(this, permissions,0)
+    }
     private fun setWindowFlag(bits: Int, on: Boolean) {
         val win = window
         val winParams = win.attributes
