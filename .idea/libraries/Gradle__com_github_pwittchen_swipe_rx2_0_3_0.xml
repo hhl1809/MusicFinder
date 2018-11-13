@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.pwittchen:swipe-rx2-0.3.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/swipe-rx2-0.3.0.aar/192c53a67a60d2239637a99f209d2f7e/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/swipe-rx2-0.3.0.aar/192c53a67a60d2239637a99f209d2f7e/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.pwittchen/swipe-rx2/0.3.0/ff0632d83fb710b00e0abd3543cf7f3de37b94c5/swipe-rx2-0.3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

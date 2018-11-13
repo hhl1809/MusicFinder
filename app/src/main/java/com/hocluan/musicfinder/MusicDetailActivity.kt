@@ -1,18 +1,25 @@
 package com.hocluan.musicfinder
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
+import com.github.pwittchen.swipe.library.rx2.Swipe
+import com.github.pwittchen.swipe.library.rx2.SwipeListener
 import kotlinx.android.synthetic.main.activity_music_detail.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
 class MusicDetailActivity : AppCompatActivity() {
+
+    // MARK: - Properties
+    private lateinit var swipe: Swipe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +40,53 @@ class MusicDetailActivity : AppCompatActivity() {
         supportActionBar?.hide()
         val jsonString = intent.getStringExtra(MainActivity.MUSIC_DETAIL_KEY)
         fetchJson(jsonString)
-
+        handleSwipeEvent()
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onBackPressed() {
+        super.onBackPressed()
         overridePendingTransition(0, 0)
     }
 
     // MARK: - Functions
+    private fun handleSwipeEvent() {
+        swipe = Swipe()
+        swipe.setListener(object: SwipeListener{
+            override fun onSwipedUp(event: MotionEvent?): Boolean {
+                val intent = Intent(this@MusicDetailActivity, MusicPlayActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_up, R.anim.stay)
+                return false
+            }
+
+            override fun onSwipedDown(event: MotionEvent?): Boolean {
+                return false
+            }
+
+            override fun onSwipingUp(event: MotionEvent?) {}
+
+            override fun onSwipedRight(event: MotionEvent?): Boolean {
+                return false
+            }
+
+            override fun onSwipingLeft(event: MotionEvent?) {}
+
+            override fun onSwipingRight(event: MotionEvent?) {}
+
+            override fun onSwipingDown(event: MotionEvent?) {}
+
+            override fun onSwipedLeft(event: MotionEvent?): Boolean {
+                return false
+            }
+
+        })
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        swipe.dispatchTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
+    }
+
     private fun setWindowFlag(bits: Int, on: Boolean) {
         val win = window
         val winParams = win.attributes
